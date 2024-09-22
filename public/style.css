@@ -33,6 +33,13 @@ h1 {
   cursor: not-allowed;
 }
 
+/* Days Passed */
+#daysPassedContainer {
+  color: #555;
+  font-size: small;
+  text-align: center;
+}
+
 /* Legend */
 .legend {
   margin-top: 20px;

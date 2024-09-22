@@ -15,6 +15,7 @@ async function loadData() {
     boxStates = data.boxStates || Array(100).fill(['', '', '']);
     currentDaySpan.textContent = `Day: ${currentDay}`;
     createBoxes();
+    calculateDaysPassed();
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -116,6 +117,20 @@ decreaseDayBtn.addEventListener('click', () => {
     saveData();
   }
 });
+
+function calculateDaysPassed() {
+  const targetDate = new Date('2024-09-22'); // Set the target date
+  const today = new Date(); // Get today's date
+
+  // Calculate the difference in time
+  const timeDiff = today - targetDate;
+
+  // Convert time difference from milliseconds to days
+  const daysPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+  // Display the result
+  document.getElementById('daysPassed').textContent = daysPassed;
+}
 
 // Initial setup
 loadData();
