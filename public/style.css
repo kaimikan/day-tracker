@@ -1,44 +1,123 @@
-#container {
+/* General Styles */
+body {
+  background-color: #121212; /* Dark background */
+  color: #ffffff; /* White text color */
+  font-family: Arial, sans-serif;
+}
+
+h1 {
   text-align: center;
-  margin-top: 20px;
 }
 
+/* Day Controls */
 #day-control {
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
 }
 
+.button {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+/* Legend */
+.legend {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.color-box {
+  display: inline-block;
+  width: 20px; /* Size of the color box */
+  height: 20px; /* Size of the color box */
+  margin-right: 10px;
+  border-radius: 3px; /* Rounded corners */
+}
+
+.color-box.green {
+  background-color: #4caf50; /* Softer green */
+}
+
+.color-box.blue {
+  background-color: #2196f3; /* Softer blue */
+}
+
+.color-box.red {
+  background-color: #f45c36; /* Softer red */
+}
+
+/* Boxes Container */
 #boxes-container {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-gap: 10px;
-  margin: 0 auto;
-  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .box {
+  width: calc(10% - 15px); /* Adjust width to fit 10 items per row */
+  height: 80px; /* Adjust as needed */
+  margin: 5px;
   display: flex;
-  border: 1px solid #000;
+  flex-direction: row;
+  border: 1px solid #333;
 }
 
+/* Adjust media query for smaller screens */
+@media (max-width: 800px) {
+  .box {
+    width: calc(20% - 10px); /* 5 items per row on smaller screens */
+  }
+}
+
+@media (max-width: 500px) {
+  .box {
+    width: calc(50% - 10px); /* 2 items per row on very small screens */
+  }
+}
+
+/* Box Parts */
 .box-part {
   flex: 1;
-  height: 50px;
-  border-right: 1px solid #000;
-  cursor: pointer;
+  border-bottom: 1px solid #333; /* Separator line */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
 }
 
-.box-part:last-child {
-  border-right: none;
+/* Colors for the parts */
+.box-part.green {
+  background-color: #4caf50; /* Softer green */
 }
 
-.green {
-  background-color: green;
+.box-part.blue {
+  background-color: #2196f3; /* Softer blue */
 }
 
-.blue {
-  background-color: blue;
+.box-part.red {
+  background-color: #f45c36; /* Softer red */
 }
 
-.red {
-  background-color: red;
+/* the middle box-part */
+.box-part:nth-child(2) {
+  border-left: 1px solid #2f2f2f83;
+  border-right: 1px solid #2f2f2f83;
+}
+
+.box.highlight {
+  border: 1px solid #bcbcbc; /* Highlight color for the current day */
 }

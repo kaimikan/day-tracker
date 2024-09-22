@@ -50,6 +50,11 @@ function createBoxes() {
     const box = document.createElement('div');
     box.className = 'box';
 
+    // Highlight the box if it matches the current day
+    if (i + 1 === currentDay) {
+      box.classList.add('highlight');
+    }
+
     for (let j = 0; j < 3; j++) {
       const boxPart = document.createElement('div');
       boxPart.className = 'box-part';
@@ -63,6 +68,11 @@ function createBoxes() {
 
     boxesContainer.appendChild(box);
   }
+}
+
+function updateDay(newDay) {
+  currentDay = newDay;
+  createBoxes(); // Recreate boxes to reflect the highlight change
 }
 
 // Handle box clicks to change color or empty
@@ -93,6 +103,7 @@ increaseDayBtn.addEventListener('click', () => {
   if (currentDay < 100) {
     currentDay++;
     currentDaySpan.textContent = `Day: ${currentDay}`;
+    updateDay(currentDay);
     saveData();
   }
 });
@@ -101,6 +112,7 @@ decreaseDayBtn.addEventListener('click', () => {
   if (currentDay > 1) {
     currentDay--;
     currentDaySpan.textContent = `Day: ${currentDay}`;
+    updateDay(currentDay);
     saveData();
   }
 });
