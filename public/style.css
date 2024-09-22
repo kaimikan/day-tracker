@@ -1,0 +1,44 @@
+#container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#day-control {
+  margin-bottom: 20px;
+}
+
+#boxes-container {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 10px;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.box {
+  display: flex;
+  border: 1px solid #000;
+}
+
+.box-part {
+  flex: 1;
+  height: 50px;
+  border-right: 1px solid #000;
+  cursor: pointer;
+}
+
+.box-part:last-child {
+  border-right: none;
+}
+
+.green {
+  background-color: green;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.red {
+  background-color: red;
+}
