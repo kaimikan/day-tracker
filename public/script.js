@@ -1,3 +1,7 @@
+// EDIT THIS TO MATCH YOUR DAILY NEEDS
+const INITIAL_DAYS = 100; // The amount of total days
+const STARTING_DATE = new Date('2024-09-22'); // The starting date YEAR-MONTH-DAY
+
 const boxesContainer = document.getElementById('boxes-container');
 const currentDaySpan = document.getElementById('current-day');
 const increaseDayBtn = document.getElementById('increase-day');
@@ -12,8 +16,8 @@ async function loadData() {
     const response = await fetch('/data');
     const data = await response.json();
     currentDay = data.currentDay || 1;
-    boxStates = data.boxStates || Array(100).fill(['', '', '']);
-    tasks = data.tasks || Array(100).fill([]); // Ensure tasks are loaded
+    boxStates = data.boxStates || Array(INITIAL_DAYS).fill(['', '', '']);
+    tasks = data.tasks || Array(INITIAL_DAYS).fill([]); // Ensure tasks are loaded
     currentDaySpan.textContent = `Day: ${currentDay}`;
     createBoxes();
     calculateDaysPassed();
@@ -49,7 +53,7 @@ async function saveData() {
 // Create boxes dynamically
 function createBoxes() {
   boxesContainer.innerHTML = ''; // Clear previous boxes
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < INITIAL_DAYS; i++) {
     const box = document.createElement('div');
     box.className = 'box';
 
@@ -185,7 +189,7 @@ function handleBoxClick(boxIndex, partIndex, boxPart) {
 
 // Increment or decrement day count
 increaseDayBtn.addEventListener('click', () => {
-  if (currentDay < 100) {
+  if (currentDay < INITIAL_DAYS) {
     currentDay++;
     currentDaySpan.textContent = `Day: ${currentDay}`;
     updateDay(currentDay);
@@ -203,7 +207,7 @@ decreaseDayBtn.addEventListener('click', () => {
 });
 
 function calculateDaysPassed() {
-  const targetDate = new Date('2024-09-22'); // Set the target date
+  const targetDate = STARTING_DATE; // Set the target date
   const today = new Date(); // Get today's date
 
   // Calculate the difference in time

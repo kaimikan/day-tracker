@@ -26,24 +26,21 @@ Follow these steps to set up the project on your local machine:
    npm install
    ```
 
-4. **Create Your Own Data File** Edit the data.json in the root of the project to fit your needs, an example below with 10 days:
+4. **Set Initial Total Days & Starting Date**
+   You should have a data.json in the root of the project with the following data (if not add it):
 
    ```json
    {
-     "currentDay": 1,
-     "boxStates": [
-       ["", "", ""],
-       ["", "", ""],
-       ["", "", ""],
-       ["", "", ""],
-       ["", "", ""],
-       ["", "", ""],
-       ["", "", ""],
-       ["", "", ""],
-       ["", "", ""],
-       ["", "", ""]
-     ]
+     "currentDay": 1
    }
+   ```
+
+   Edit the data shown below at the top of the script.js file to match your needs:
+
+   ```javascript
+   // EDIT THIS TO MATCH YOUR DAILY NEEDS
+   const INITIAL_DAYS = 100; // The amount of total days
+   const STARTING_DATE = new Date('2024-09-22'); // The starting date YEAR-MONTH-DAY
    ```
 
 5. **Start the Server** Run the following command to start the server:
