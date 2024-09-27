@@ -70,6 +70,7 @@ h1 {
 #boxes-container {
   display: flex;
   flex-wrap: wrap;
+  align-items: stretch; /* Ensure all children stretch to the same height */
   flex-direction: row;
   justify-content: center;
 }
@@ -80,6 +81,7 @@ h1 {
   margin: 5px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   border: 1px solid #333;
 }
 
@@ -98,6 +100,7 @@ h1 {
 
 /* Box Parts */
 .box-part {
+  height: 50px;
   flex: 1;
   border-bottom: 1px solid #333; /* Separator line */
   display: flex;
@@ -127,4 +130,83 @@ h1 {
 
 .box.highlight {
   border: 1px solid #bcbcbc; /* Highlight color for the current day */
+}
+
+/* Task Dropdown */
+
+.box > div {
+  flex: 1 1 33%; /* Each child will take 33% of the row width */
+  box-sizing: border-box;
+}
+
+.box > div:nth-child(4) {
+  flex-basis: 100%; /* Force the 4th child to take the full width */
+  background-color: rgb(49, 49, 49);
+  height: 30px;
+  padding: 0;
+  margin: 0;
+
+  .tasks-toggle {
+    z-index: -1;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(53, 53, 53);
+    color: #bbbbbb;
+  }
+}
+
+.task-dropdown {
+  position: fixed;
+  z-index: 999;
+  gap: 5px;
+  background-color: rgb(154, 154, 154);
+}
+
+.task-dropdown ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.task-dropdown ul li {
+  cursor: pointer;
+  padding: 5px;
+  color: #1f1f1f;
+}
+
+.task-dropdown ul li.done .task-text {
+  text-decoration: line-through;
+  color: #136e07;
+}
+
+.task-dropdown input {
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+}
+
+.task-dropdown button {
+  padding: 5px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.task-dropdown button:hover {
+  background-color: #45a049;
+}
+
+/* Style the delete button */
+.delete-task {
+  color: red;
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.delete-task:hover {
+  color: darkred;
 }
