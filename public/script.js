@@ -82,6 +82,11 @@ function createBoxes() {
     toggleTasksBtn.className = 'tasks-toggle';
     toggleTasksBtn.addEventListener('click', () => toggleTaskDropdown(i));
 
+    // Create the task overlay container
+    const taskDropdownOverlay = document.createElement('div');
+    taskDropdownOverlay.className = 'task-dropdown-overlay';
+    taskDropdownOverlay.style.display = 'none'; // Hide initially
+
     // Create the task dropdown container
     const taskDropdown = document.createElement('div');
     taskDropdown.className = 'task-dropdown';
@@ -89,9 +94,25 @@ function createBoxes() {
     taskDropdown.style.display = 'none'; // Hide initially
     taskDropdown.innerHTML = getTasksHTML(i); // Populate with tasks
 
+    // Handle the closing the dropdown when clicking outside of it (on the overlay)
+    taskDropdownOverlay.addEventListener('click', (event) => {
+      // we also want to make sure our click is not on top of the .task-dropdown inside the overlay
+      if (
+        event.target.style.display === 'flex' &&
+        !event.target.classList.contains('task-dropdown')
+      ) {
+        event.target.style.display = 'none';
+        taskDropdown.style.display = 'none';
+        console.log('closed tasks');
+      } else {
+        console.log('most likely clicking on the task dropdown in the middle');
+      }
+    });
+
     // Append task button and dropdown to the box
     dailyTasksDiv.appendChild(toggleTasksBtn);
-    dailyTasksDiv.appendChild(taskDropdown);
+    taskDropdownOverlay.appendChild(taskDropdown);
+    dailyTasksDiv.appendChild(taskDropdownOverlay);
     box.appendChild(dailyTasksDiv);
     boxesContainer.appendChild(box);
   }
@@ -100,17 +121,19 @@ function createBoxes() {
 // Toggle task dropdown visibility
 function toggleTaskDropdown(dayIndex) {
   // Close all other opened tasks and open/close the clicked one
+  const taskDropdownOverlays = boxesContainer.querySelectorAll(
+    '.task-dropdown-overlay'
+  );
   const taskDropdowns = boxesContainer.querySelectorAll('.task-dropdown');
 
   // Loop through all task-dropdown elements
   taskDropdowns.forEach((dropdown, index) => {
+    let dropdownOverlay = taskDropdownOverlays.item(index);
     if (index === dayIndex) {
       // Toggle the visibility for the selected dayIndex dropdown
-      dropdown.style.display =
-        dropdown.style.display === 'none' ? 'flex' : 'none';
-    } else {
-      // Ensure all other dropdowns are hidden
-      dropdown.style.display = 'none';
+      dropdown.style.display = 'flex';
+      dropdownOverlay.style.display = 'flex';
+      console.log('opened tasks');
     }
   });
 }
