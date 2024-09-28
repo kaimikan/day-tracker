@@ -157,11 +157,18 @@ h1 {
   }
 }
 
+.tasks-date {
+  margin: 0;
+  padding: 0;
+}
+
 .task-dropdown {
   position: fixed;
   z-index: 999;
   gap: 5px;
   background-color: rgb(154, 154, 154);
+  padding: 10px;
+  border: 3px solid #555;
 }
 
 .task-dropdown ul {

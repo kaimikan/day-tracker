@@ -99,16 +99,29 @@ function createBoxes() {
 
 // Toggle task dropdown visibility
 function toggleTaskDropdown(dayIndex) {
-  const taskDropdown =
-    boxesContainer.children[dayIndex].querySelector('.task-dropdown');
-  taskDropdown.style.display =
-    taskDropdown.style.display === 'none' ? 'flex' : 'none';
+  // Close all other opened tasks and open/close the clicked one
+  const taskDropdowns = boxesContainer.querySelectorAll('.task-dropdown');
+
+  // Loop through all task-dropdown elements
+  taskDropdowns.forEach((dropdown, index) => {
+    if (index === dayIndex) {
+      // Toggle the visibility for the selected dayIndex dropdown
+      dropdown.style.display =
+        dropdown.style.display === 'none' ? 'flex' : 'none';
+    } else {
+      // Ensure all other dropdowns are hidden
+      dropdown.style.display = 'none';
+    }
+  });
 }
 
 // Generate the tasks HTML for a specific day
 function getTasksHTML(dayIndex) {
   let taskList = tasks[dayIndex] || [];
   let html = '<ul>';
+  let dateOfTaskGroup = new Date(STARTING_DATE);
+  dateOfTaskGroup.setDate(dateOfTaskGroup.getDate() + dayIndex);
+  html += `<p class="tasks-date"> ${convertDateToString(dateOfTaskGroup)} </p>`;
 
   taskList.forEach((task, taskIndex) => {
     let doneClass = task.done ? 'done' : '';
@@ -207,7 +220,7 @@ decreaseDayBtn.addEventListener('click', () => {
 });
 
 function calculateDaysPassed() {
-  const targetDate = STARTING_DATE; // Set the target date
+  const targetDate = new Date(STARTING_DATE); // Set the target date
   const today = new Date(); // Get today's date
 
   // Calculate the difference in time
@@ -216,8 +229,21 @@ function calculateDaysPassed() {
   // Convert time difference from milliseconds to days
   const daysPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
+  const initialDateString = convertDateToString(targetDate);
+
   // Display the result
   document.getElementById('daysPassed').textContent = daysPassed;
+  document.getElementById('initialDate').textContent = initialDateString;
+}
+
+function convertDateToString(date) {
+  const dateStringOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return date.toLocaleDateString('en-US', dateStringOptions);
 }
 
 // Initial setup
