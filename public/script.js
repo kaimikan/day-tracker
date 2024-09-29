@@ -94,6 +94,16 @@ function createBoxes() {
     taskDropdown.style.display = 'none'; // Hide initially
     taskDropdown.innerHTML = getTasksHTML(i); // Populate with tasks
 
+    // Add Enter as valid event for task adding
+    // let addTaskBtn = taskDropdown.querySelector('.add-task-btn');
+    let addTaskInput = taskDropdown.querySelector('.task-input-field');
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && taskDropdown.style.display !== 'none') {
+        addTask(i);
+        addTaskInput.focus();
+      }
+    });
+
     // Handle the closing the dropdown when clicking outside of it (on the overlay)
     taskDropdownOverlay.addEventListener('click', (event) => {
       // we also want to make sure our click is not on top of the .task-dropdown inside the overlay
@@ -133,7 +143,10 @@ function toggleTaskDropdown(dayIndex) {
       // Toggle the visibility for the selected dayIndex dropdown
       dropdown.style.display = 'flex';
       dropdownOverlay.style.display = 'flex';
+
+      //Autofocus input field
       console.log('opened tasks');
+      dropdown.querySelector('.task-input-field').focus();
     }
   });
 }
@@ -156,14 +169,16 @@ function getTasksHTML(dayIndex) {
   });
 
   html += '</ul>';
-  html += `<input type="text" id="taskInput-${dayIndex}" placeholder="New task">`;
-  html += `<button onclick="addTask(${dayIndex})">Add Task</button>`;
+  html += `<input class="task-input-field" type="text" id="taskInput-${dayIndex}" placeholder="New task" autofocus>`;
+
+  html += `<button class="add-task-btn" onclick="addTask(${dayIndex})">Add Task</button>`;
   return html;
 }
 
 // Add a new task to a specific day
 function addTask(dayIndex) {
-  const taskInput = document.getElementById(`taskInput-${dayIndex}`).value;
+  const taskInputElement = document.getElementById(`taskInput-${dayIndex}`);
+  const taskInput = taskInputElement.value;
   if (taskInput) {
     if (!tasks[dayIndex]) {
       tasks[dayIndex] = [];
@@ -172,6 +187,8 @@ function addTask(dayIndex) {
     updateTasks(dayIndex);
     saveData(); // Save data after task is added
   }
+  // Due to the keydown code in createBoxes() we can refocus onto the input field just by clicking Enter with an empty input
+  taskInputElement.focus();
 }
 
 // Delete a task from a specific day
