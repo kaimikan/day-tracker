@@ -101,6 +101,13 @@ function createBoxes() {
       if (event.key === 'Enter' && taskDropdown.style.display !== 'none') {
         addTask(i);
         addTaskInput.focus();
+      } else if (
+        event.key === 'Escape' &&
+        taskDropdown.style.display !== 'none'
+      ) {
+        taskDropdownOverlay.style.display = 'none';
+        taskDropdown.style.display = 'none';
+        console.log('closed tasks');
       }
     });
 
