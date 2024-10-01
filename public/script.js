@@ -167,7 +167,12 @@ function getTasksHTML(dayIndex) {
   html += `<p class="tasks-date"> ${convertDateToString(dateOfTaskGroup)} </p>`;
 
   taskList.forEach((task, taskIndex) => {
-    let doneClass = task.done ? 'done' : '';
+    let doneClass =
+      task.done === true || task.done === 'done'
+        ? 'done'
+        : task.done === false || task.done === 'not-done'
+        ? 'not-done'
+        : '';
     html += `
       <li class="${doneClass}" >
         <span class="task-text" onclick="toggleTaskStatus(${dayIndex}, ${taskIndex})" >${task.name}</span> 
@@ -190,7 +195,7 @@ function addTask(dayIndex) {
     if (!tasks[dayIndex]) {
       tasks[dayIndex] = [];
     }
-    tasks[dayIndex].push({ name: taskInput, done: false });
+    tasks[dayIndex].push({ name: taskInput, done: '' });
     updateTasks(dayIndex);
     saveData(); // Save data after task is added
   }
@@ -205,9 +210,20 @@ function deleteTask(dayIndex, taskIndex) {
   saveData(); // Save the updated tasks to the data.json file
 }
 
-// Toggle the task status between "done" and "not-done"
+// Toggle the task status between "done", "not-done", and ""
 function toggleTaskStatus(dayIndex, taskIndex) {
-  tasks[dayIndex][taskIndex].done = !tasks[dayIndex][taskIndex].done;
+  // tasks[dayIndex][taskIndex].done = !tasks[dayIndex][taskIndex].done;
+  let doneStatus = tasks[dayIndex][taskIndex].done;
+  if (doneStatus === 'done' || doneStatus === true) {
+    doneStatus = 'not-done';
+  } else if (doneStatus === '' || doneStatus === null) {
+    doneStatus = 'done';
+  } else if (doneStatus === 'not-done' || doneStatus === false) {
+    doneStatus = '';
+  }
+  console.log(doneStatus);
+  tasks[dayIndex][taskIndex].done = doneStatus;
+
   updateTasks(dayIndex);
   saveData(); // Save data after task status change
 }

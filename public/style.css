@@ -192,11 +192,23 @@ h1 {
   cursor: pointer;
   padding: 5px;
   color: #1f1f1f;
+
+  /* make it un-selectable */
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .task-dropdown ul li.done .task-text {
   text-decoration: line-through;
   color: #136e07;
+}
+
+.task-dropdown ul li.not-done .task-text {
+  text-decoration: line-through;
+  color: #6e1307;
 }
 
 .task-dropdown input {
