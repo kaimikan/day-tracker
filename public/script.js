@@ -174,17 +174,51 @@ function getTasksHTML(dayIndex) {
         ? 'not-done'
         : '';
     html += `
-      <li class="${doneClass}" >
-        <span class="task-text" onclick="toggleTaskStatus(${dayIndex}, ${taskIndex})" >${task.name}</span> 
+      <li 
+        class="task-item ${doneClass}" 
+        draggable="true"
+        ondragstart="handleDragStart(event, ${dayIndex}, ${taskIndex})"
+        ondragover="handleDragOver(event)"
+        ondrop="handleDrop(event, ${dayIndex}, ${taskIndex})"
+      >
+        <span class="task-text" onclick="toggleTaskStatus(${dayIndex}, ${taskIndex})">
+          ${task.name}
+        </span> 
         <span class="delete-task" onclick="deleteTask(${dayIndex}, ${taskIndex})">X</span>
       </li>`;
   });
 
   html += '</ul>';
   html += `<input class="task-input-field" type="text" id="taskInput-${dayIndex}" placeholder="New task" autofocus>`;
-
   html += `<button class="add-task-btn" onclick="addTask(${dayIndex})">Add Task</button>`;
   return html;
+}
+
+function handleDragStart(event, dayIndex, taskIndex) {
+  event.dataTransfer.setData(
+    'text/plain',
+    JSON.stringify({ dayIndex, taskIndex })
+  );
+  event.target.classList.add('dragging');
+}
+
+function handleDragOver(event) {
+  event.preventDefault(); // Necessary to allow dropping
+}
+
+function handleDrop(event, dayIndex, targetTaskIndex) {
+  event.preventDefault();
+  const data = JSON.parse(event.dataTransfer.getData('text/plain'));
+  const { dayIndex: fromDayIndex, taskIndex: fromTaskIndex } = data;
+
+  if (fromDayIndex === dayIndex) {
+    // Only handle reordering within the same day
+    const [movedTask] = tasks[dayIndex].splice(fromTaskIndex, 1);
+    tasks[dayIndex].splice(targetTaskIndex, 0, movedTask);
+
+    updateTasks(dayIndex); // Update the task dropdown with the new order
+    saveData(); // Save the updated order
+  }
 }
 
 // Add a new task to a specific day

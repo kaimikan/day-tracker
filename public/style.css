@@ -183,6 +183,10 @@ h1 {
   border: 3px solid #555;
 }
 
+.task-item.dragging {
+  opacity: 0.5;
+}
+
 .task-dropdown ul {
   list-style-type: none;
   padding-left: 0;
