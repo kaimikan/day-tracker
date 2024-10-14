@@ -173,6 +173,8 @@ function getTasksHTML(dayIndex) {
         : task.done === false || task.done === 'not-done'
         ? 'not-done'
         : '';
+
+    // Conditionally render either the input field or the task text based on an 'editing' property
     html += `
       <li 
         class="task-item ${doneClass}" 
@@ -181,10 +183,23 @@ function getTasksHTML(dayIndex) {
         ondragover="handleDragOver(event)"
         ondrop="handleDrop(event, ${dayIndex}, ${taskIndex})"
       >
-        <span class="task-text" onclick="toggleTaskStatus(${dayIndex}, ${taskIndex})">
-          ${task.name}
-        </span> 
+        ${
+          task.editing
+            ? `<input type="text" class="edit-task-input" 
+                 value="${task.name}" 
+                 onblur="saveTaskEdit(${dayIndex}, ${taskIndex}, this.value)" 
+                 onkeydown="if(event.key === 'Enter') saveTaskEdit(${dayIndex}, ${taskIndex}, this.value)">
+               `
+            : `<span class="task-text" onclick="toggleTaskStatus(${dayIndex}, ${taskIndex})">
+                 ${task.name}
+               </span>`
+        }
         <span class="delete-task" onclick="deleteTask(${dayIndex}, ${taskIndex})">X</span>
+        ${
+          !task.editing
+            ? `<span class="edit-task" onclick="editTask(${dayIndex}, ${taskIndex})">Edit</span>`
+            : ''
+        }
       </li>`;
   });
 
@@ -194,6 +209,26 @@ function getTasksHTML(dayIndex) {
   return html;
 }
 
+// Enable editing for a specific task
+function editTask(dayIndex, taskIndex) {
+  // Set the editing property to true for the selected task
+  tasks[dayIndex][taskIndex].editing = true;
+  updateTasks(dayIndex); // Re-render the tasks to show the input field
+}
+
+// Save the edited task and update the task list
+function saveTaskEdit(dayIndex, taskIndex, newTaskName) {
+  if (newTaskName.trim()) {
+    tasks[dayIndex][taskIndex].name = newTaskName.trim();
+    tasks[dayIndex][taskIndex].editing = false;
+    updateTasks(dayIndex); // Re-render tasks to show the updated name
+    saveData(); // Save the updated task to the data.json file
+  } else {
+    deleteTask(dayIndex, taskIndex); // If the new name is empty, delete the task
+  }
+}
+
+//Draggable list items
 function handleDragStart(event, dayIndex, taskIndex) {
   event.dataTransfer.setData(
     'text/plain',
