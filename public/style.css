@@ -183,8 +183,65 @@ h1 {
   border: 3px solid #555;
 }
 
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #ddd; /* Separation line */
+  position: relative;
+}
+
+.task-item .drag-icon {
+  cursor: grab;
+  margin-right: 8px;
+  color: #888;
+  font-size: 1rem;
+}
+
+.drag-icon:hover {
+  color: rgb(55, 55, 55);
+}
+
+.task-item .task-text {
+  flex-grow: 1;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.task-item .edit-task,
+.task-item .delete-task {
+  margin-left: 8px;
+  cursor: pointer;
+  color: #888;
+}
+
+.task-item .edit-task i,
+.task-item .delete-task i {
+  font-size: 1rem;
+}
+
+.delete-task:hover {
+  color: darkred;
+}
+.edit-task:hover {
+  color: rgb(0, 60, 139);
+}
+
+.task-item .task-separator {
+  width: 100%;
+  height: 1px;
+  background-color: #ddd;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
 .task-item.dragging {
   opacity: 0.5;
+}
+
+.edit-task-input {
+  width: 100%;
 }
 
 .task-dropdown ul {
@@ -232,16 +289,4 @@ h1 {
 
 .task-dropdown button:hover {
   background-color: #45a049;
-}
-
-/* Style the delete button */
-.delete-task {
-  color: red;
-  margin-left: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.delete-task:hover {
-  color: darkred;
 }

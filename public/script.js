@@ -183,6 +183,8 @@ function getTasksHTML(dayIndex) {
         ondragover="handleDragOver(event)"
         ondrop="handleDrop(event, ${dayIndex}, ${taskIndex})"
       >
+        <span class="drag-icon" 
+              onmousedown="handleDragStart(event, ${dayIndex}, ${taskIndex})">⠿</span> <!-- Unicode drag icon or use a Font Awesome icon -->
         ${
           task.editing
             ? `<input type="text" class="edit-task-input" 
@@ -194,12 +196,17 @@ function getTasksHTML(dayIndex) {
                  ${task.name}
                </span>`
         }
-        <span class="delete-task" onclick="deleteTask(${dayIndex}, ${taskIndex})">X</span>
+        <span class="delete-task" onclick="deleteTask(${dayIndex}, ${taskIndex})">
+          <i class="fas fa-trash"></i> <!-- Font Awesome trash icon -->
+        </span>
         ${
           !task.editing
-            ? `<span class="edit-task" onclick="editTask(${dayIndex}, ${taskIndex})">Edit</span>`
+            ? `<span class="edit-task" onclick="editTask(${dayIndex}, ${taskIndex})">
+                 <i class="fas fa-edit"></i> <!-- Font Awesome edit icon -->
+               </span>`
             : ''
         }
+        <div class="task-separator"></div>
       </li>`;
   });
 
@@ -214,8 +221,17 @@ function editTask(dayIndex, taskIndex) {
   // Set the editing property to true for the selected task
   tasks[dayIndex][taskIndex].editing = true;
   updateTasks(dayIndex); // Re-render the tasks to show the input field
-}
 
+  // Wait for the DOM to update before focusing the input
+  setTimeout(() => {
+    const editInput =
+      boxesContainer.children[dayIndex].querySelector('.edit-task-input');
+    if (editInput) {
+      editInput.focus(); // Set focus to the input field
+      editInput.select(); // Select the text inside for easier editing
+    }
+  }, 0);
+}
 // Save the edited task and update the task list
 function saveTaskEdit(dayIndex, taskIndex, newTaskName) {
   if (newTaskName.trim()) {
@@ -272,11 +288,14 @@ function addTask(dayIndex) {
   taskInputElement.focus();
 }
 
-// Delete a task from a specific day
+// Delete a task from a specific day with a confirmation prompt
 function deleteTask(dayIndex, taskIndex) {
-  tasks[dayIndex].splice(taskIndex, 1); // Remove task from the array
-  updateTasks(dayIndex); // Update the task dropdown
-  saveData(); // Save the updated tasks to the data.json file
+  const confirmed = confirm('Are you sure you want to delete this task?');
+  if (confirmed) {
+    tasks[dayIndex].splice(taskIndex, 1); // Remove task from the array
+    updateTasks(dayIndex); // Update the task dropdown
+    saveData(); // Save the updated tasks to the data.json file
+  }
 }
 
 // Toggle the task status between "done", "not-done", and ""
